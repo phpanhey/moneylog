@@ -1,0 +1,83 @@
+
+<!doctype html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title></title>
+    </head>
+    <body>
+        <div>
+            <h1>Saldo</h1>
+            <canvas id="saldo"></canvas>
+            <h1>Tag</h1>
+            <canvas id="catgeories"></canvas>
+        </div>
+    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx_1 = document.getElementById("saldo");
+
+        const income_expenses = [
+            ["income", 950],
+            ["expenses", 320],
+        ];
+
+        new Chart(ctx_1, {
+            type: "bar",
+            data: {
+                labels: income_expenses.map((item) => item[0]),
+                datasets: [
+                    {
+                        label: "# of Votes",
+                        data: income_expenses.map((item) => item[1]),
+                        borderWidth: 1,
+                    },
+                ],
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+
+        const ctx_2 = document.getElementById("catgeories");
+
+        const expenses = [
+            ["Rent", 950],
+            ["Groceries", 320],
+            ["Restaurants", 145],
+            ["Transport", 90],
+            ["Subscriptions", 65],
+            ["Shopping", 180],
+            ["Entertainment", 75],
+            ["Utilities", 140],
+            ["Other", 55],
+        ];
+
+        new Chart(ctx_2, {
+            type: "bar",
+            data: {
+                labels: expenses.map((item) => item[0]),
+                datasets: [
+                    {
+                        label: "# of Votes",
+                        data: expenses.map((item) => item[1]),
+                        borderWidth: 1,
+                    },
+                ],
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    </script>
+</html>
