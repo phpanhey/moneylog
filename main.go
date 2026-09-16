@@ -7,6 +7,7 @@ import (
 	"github.com/jsattler/go-comdirect/pkg/comdirect"
 	"log"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -46,19 +47,21 @@ func main() {
 	opts := comdirect.EmptyOptions()
 	opts.Add("min-bookingDate", firstOfMonth.Format("2006-01-02")).
 		Add(comdirect.MaxBookingDateQueryKey, now.Format("2006-01-02")).
-		Add(comdirect.PagingCountQueryKey, "100")
+		Add(comdirect.PagingCountQueryKey, "500")
 
 	txns, err := client.Transactions(ctx, accountID, opts)
 	if err != nil {
 		log.Fatalf("fetching transactions failed: %v", err)
 	}
-
+	sum := float64(0)
 	for _, t := range txns.Values {
-		fmt.Printf("%s  %8s %s  %s\n",
-			t.BookingDate,
-			t.Amount.Value,
-			t.Amount.Unit,
-			t.RemittanceInfo,
-		)
+		strVal := t.Amount.Value
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil{
+			continue
+		}
+		sum = sum + floatVal
 	}
+	fmt.Println("---Addition---")
+	fmt.Println(strconv.FormatFloat(sum, 'f', 2, 64))
 }
