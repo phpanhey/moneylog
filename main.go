@@ -53,15 +53,27 @@ func main() {
 	if err != nil {
 		log.Fatalf("fetching transactions failed: %v", err)
 	}
-	sum := float64(0)
+
+	income := float64(0)
+	expense := float64(0)
+
 	for _, t := range txns.Values {
 		strVal := t.Amount.Value
 		floatVal, err := strconv.ParseFloat(strVal, 64)
-		if err != nil{
+		if err != nil {
 			continue
 		}
-		sum = sum + floatVal
+
+		if floatVal < 0 {
+			expense = expense + floatVal
+		} else {
+			income = income + floatVal
+		}
 	}
-	fmt.Println("---Addition---")
-	fmt.Println(strconv.FormatFloat(sum, 'f', 2, 64))
+
+	fmt.Println("──────── Money Summary ────────")
+	fmt.Printf("%-10s %12.2f\n", "Income:", income)
+	fmt.Printf("%-10s %12.2f\n", "Expense:", expense)
+	fmt.Println("───────────────────────────────")
+	fmt.Printf("%-10s %+12.2f\n", "Net:", net)
 }
