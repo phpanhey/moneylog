@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"math"
 )
 
 func main() {
@@ -50,6 +51,7 @@ func main() {
 		Add(comdirect.PagingCountQueryKey, "500")
 
 	txns, err := client.Transactions(ctx, accountID, opts)
+
 	if err != nil {
 		log.Fatalf("fetching transactions failed: %v", err)
 	}
@@ -65,15 +67,13 @@ func main() {
 		}
 
 		if floatVal < 0 {
-			expense = expense + floatVal
+			expense += math.Abs(floatVal)
 		} else {
-			income = income + floatVal
+			income += floatVal
 		}
 	}
 
-	fmt.Println("──────── Money Summary ────────")
-	fmt.Printf("%-10s %12.2f\n", "Income:", income)
-	fmt.Printf("%-10s %12.2f\n", "Expense:", expense)
-	fmt.Println("───────────────────────────────")
-	fmt.Printf("%-10s %+12.2f\n", "Net:", net)
+	fmt.Printf("↑ %.2f  ↓ %.2f  = %+.2f\n", income, expense, income - expense)
 }
+
+
